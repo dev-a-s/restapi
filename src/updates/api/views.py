@@ -1,10 +1,13 @@
+import json
+
 from django.views.generic import View
 from django.http import HttpResponse
 
 from updates.models import Update as UpdateModel
+from .mixins import CSRFExemptMixin
 
 
-class UpdateModelDetailAPIView(View):
+class UpdateModelDetailAPIView(CSRFExemptMixin, View):
     """Retrieve, Update, Delete"""
 
     def get(self, request, id, *args, **kwargs):
@@ -22,7 +25,7 @@ class UpdateModelDetailAPIView(View):
         return HttpResponse({}, content_type="application/json")
 
 
-class UpdateModelListAPIView(View):
+class UpdateModelListAPIView(CSRFExemptMixin, View):
     """List/Create"""
 
     def get(self, request, *args, **kwargs):
@@ -31,4 +34,9 @@ class UpdateModelListAPIView(View):
         return HttpResponse(json_data, content_type="application/json")
 
     def post(self, request, *args, **kwargs):
-        return HttpResponse({}, content_type="application/json")
+        data = json.dumps({"message": "Unknown data"})
+        return HttpResponse(data, content_type="application/json")
+
+    def delete(self, request, *args, **kwargs):
+        data = json.dumps({"message": "You can not delete an entire list"})
+        return HttpResponse(data, content_type="application/json")
