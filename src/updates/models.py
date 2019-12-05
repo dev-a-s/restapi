@@ -45,8 +45,9 @@ class Update(models.Model):
         return self.content or ""
 
     def serialize(self):
-        json_data = serialize("json", (self,), fields=("user", "content", "image"))
-        stuct = json.loads(json_data)
-        print(stuct)
-        data = json.dumps(stuct[0]["fields"])
-        return data
+        try:
+            image = self.image.url
+        except:
+            image = ""
+        data = {"content": self.content, "user": self.user.id, "image": image}
+        return json.dumps(data)
