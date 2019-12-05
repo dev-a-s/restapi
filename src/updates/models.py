@@ -1,5 +1,6 @@
 import json
-from django.core.serializers import serialize
+
+# from django.core.serializers import serialize
 from django.conf import settings
 from django.db import models
 
@@ -22,7 +23,7 @@ class UpdateQuerySet(models.QuerySet):
     #     return json.dumps(final_array)
 
     def serialize(self):
-        list_values = list(self.values("user", "content", "image"))
+        list_values = list(self.values("id", "user", "content", "image"))
         print(list_values)
         return json.dumps(list_values)
 
@@ -49,5 +50,10 @@ class Update(models.Model):
             image = self.image.url
         except:
             image = ""
-        data = {"content": self.content, "user": self.user.id, "image": image}
+        data = {
+            "id": self.id,
+            "content": self.content,
+            "user": self.user.id,
+            "image": image,
+        }
         return json.dumps(data)
