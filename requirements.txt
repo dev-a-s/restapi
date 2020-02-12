@@ -3,7 +3,7 @@ pillow
 requests
 
 # Django-related
-django==1.11.26
+django==1.11.28
 
 # utils
 flake8
